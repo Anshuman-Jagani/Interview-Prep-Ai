@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Input from "../../components/Inputs/input";
+import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
 
 const Signup = ({setCurrentPage}) => {
   const [profilePic, setProfiePic] = useState(null);
@@ -24,6 +25,9 @@ const Signup = ({setCurrentPage}) => {
       </p>
 
       <form onSubmit={handleSignUp}>
+
+        <ProfilePhotoSelector image={profilePic} setImage={setProfiePic} />
+
         <div className="grid grid-cols-1 md:grid-cols-1 gap-2">
           <Input
             value={fullName}
@@ -72,4 +76,4 @@ const Signup = ({setCurrentPage}) => {
   );
 }
 
-export default Signup
+export default Signup;
