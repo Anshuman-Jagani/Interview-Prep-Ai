@@ -46,7 +46,7 @@ const Login = ({ setCurrentPage }) => {
         Please enter your details to log in.
       </p>
 
-      <form onsubmit={handleLogin}>
+      <form onSubmit={handleLogin}>
         <Input
           value={email}
           onChange={({ target }) => setEmail(target.value)}

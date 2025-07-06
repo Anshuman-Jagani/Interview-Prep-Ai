@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import Input from "../../components/Inputs/input";
 import ProfilePhotoSelector from '../../components/Inputs/ProfilePhotoSelector';
+import { validateEmail } from '../../utils/helper';
 
 const Signup = ({setCurrentPage}) => {
   const [profilePic, setProfiePic] = useState(null);
@@ -16,7 +17,39 @@ const Signup = ({setCurrentPage}) => {
   //Handle SignUp Form
   const handleSignUp = async (e) => {
     e.preventDefault();
-  }
+
+    let profileImgUrl = "";
+
+    if(!fullName) {
+      setError("Please enter Full Name");
+      return;
+    }
+
+    if(!validateEmail(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if(!password) {
+      setError("Please enter the password");
+      return;
+    }
+
+    setError("");
+
+    //Signup API Call
+    try {
+      
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong. Please try again.");
+      }
+    }
+  };
+
+
   return (
     <div className="w-[90vw] md:w-[33vw] p-7 flex flex-col justify-center">
       <h3 className="text-lg font-semibold text-black "> Create an Account </h3>
