@@ -73,7 +73,7 @@ const CreateSessionForm = () => {
     };
   return (
     <div className="w-[90vw] md:w-[35vw] p-7 flex flex-col justify-center">
-      <h3 className="text-lg font-semibold text-black">Start a New Interiew Journey</h3>
+      <h3 className="text-lg font-semibold text-black">Start a New Interview Journey</h3>
       <p className="text-xs text-slate-700 mt-[5px] mb-3">
         Fill out a few quick details and unlock your personalized set of
         interview questions!
@@ -82,28 +82,28 @@ const CreateSessionForm = () => {
       <form onSubmit={handleCreateSession} className="flex flex-col gap-3">
         <Input
           value={formData.role}
-          onChnage={({ target }) => handleChange("role", target.value)}
+          onChange={({ target }) => handleChange("role", target.value)}
           label="Target Role"
           placeholder="(e.g., Frontend Developer, UI/UX Designer, etc.)"
           type="text"
         />
         <Input
           value={formData.experience}
-          onChnage={({ target }) => handleChange("experience", target.value)}
+          onChange={({ target }) => handleChange("experience", target.value)}
           label="Years of Experience"
           placeholder="(e.g., 1 year, 3 years, 5+ years)"
           type="number"
         />
         <Input
           value={formData.topicsToFocus}
-          onChnage={({ target }) => handleChange("topicsToFocus", target.value)}
+          onChange={({ target }) => handleChange("topicsToFocus", target.value)}
           label="Topics to Focus On"
           placeholder="(Comma-seperated, e.g., React, Node.js, MongoDB)"
           type="text"
         />
         <Input
           value={formData.description}
-          onChnage={({ target }) => handleChange("description", target.value)}
+          onChange={({ target }) => handleChange("description", target.value)}
           label="Description"
           placeholder="(Any specific goals or notes for this session)"
           type="text"
