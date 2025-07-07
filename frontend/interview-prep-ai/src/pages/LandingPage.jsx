@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import HERO_IMG from "../assets/hero-img.png";
 import { APP_FEATURES } from "../utils/data";
@@ -7,14 +7,23 @@ import { LuMoveDiagonal, LuSparkles } from "react-icons/lu";
 import Modal from "../components/Modal";
 import Login from "./Auth/Login";
 import Signup from "./Auth/Signup";
+import { UserContext } from "../context/userContext";
 
 const LandingPage = () => {
+  const { user } = useContext(UserContext);
+
   const navigate = useNavigate();
 
   const [openAuthModel, setOepnAuthModel] = useState(false);
   const [currentPage, setCurrentPage] = useState("login");
 
-  const handleCTA = () => {};
+  const handleCTA = () => {
+    if (!user) {
+      setOepnAuthModel(true);
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <>
@@ -27,12 +36,16 @@ const LandingPage = () => {
             <div className="text-xl text-black font-bold">
               Interview Prep AI
             </div>
-            <button
-              className="bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
-              onClick={() => setOepnAuthModel(true)}
-            >
-              Login / SignUp
-            </button>
+            {user ? (
+              <ProfileInfoCard />
+            ) : (
+              <button
+                className="bg-linear-to-r from-[#FF9324] to-[#e99a4b] text-sm font-semibold text-white px-7 py-2.5 rounded-full hover:bg-black hover:text-white border border-white transition-colors cursor-pointer"
+                onClick={() => setOepnAuthModel(true)}
+              >
+                Login / SignUp
+              </button>
+            )}
           </header>
 
           {/* Hero Content */}
@@ -114,7 +127,9 @@ const LandingPage = () => {
                       key={feature.id}
                       className="bg-[#FFFEF8] p-6 rounded-xl shadow-xs hover:shadow-lg shadow-amber-100 transition border border-amber-100"
                     >
-                      <h3 className="text-base font-semibold mb-3">{feature.title}</h3>
+                      <h3 className="text-base font-semibold mb-3">
+                        {feature.title}
+                      </h3>
                       <p className="text-gray-600">{feature.description}</p>
                     </div>
                   ))}
@@ -129,7 +144,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <Modal 
+      <Modal
         isOpen={openAuthModel}
         onClose={() => {
           setOepnAuthModel(false);
@@ -138,9 +153,7 @@ const LandingPage = () => {
         hideHeader
       >
         <div>
-          {currentPage === "login" && (
-            <Login setCurrentPage={setCurrentPage} />
-          )}
+          {currentPage === "login" && <Login setCurrentPage={setCurrentPage} />}
           {currentPage === "signup" && (
             <Signup setCurrentPage={setCurrentPage} />
           )}
