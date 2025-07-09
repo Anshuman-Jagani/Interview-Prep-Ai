@@ -88,7 +88,45 @@ const InterviewPrep = () => {
   };
 
   // Add more questions to a session
-  const uploadMoreQuestions = async () => {};
+  const uploadMoreQuestions = async () => {
+    try {
+      setIsUpdateLoader(true);
+
+      // Call AI Api to generate questions
+      const aiResponse = await axiosInstance.post(
+        API_PATHS.AI.GENERATE_QUESTIONS,{
+          role: sessionData?.role,
+          experience: sessionData?.experience,
+          topicsToFocus: sessionData?.topicsToFocus,
+          numberOfQuestions: 10,
+        }
+      );
+
+      // Should be Array like [{ question, answer }]
+      const generatedQuestions = aiResponse.data;
+
+      const response = await axiosInstance.post(
+        API_PATHS.QUESTION.ADD_TO_SESSION,
+        {
+          sessionId,
+          questions: generatedQuestions,
+        }
+      );
+
+       if(response.data) {
+        toast.success("Added More Q&A!!");
+        fetchSessionDetailsById();
+       }
+    } catch (error) {
+      if(error.response && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Something went wrong, Please try again.");
+      }
+    } finally {
+      setIsUpdateLoader(false);
+    }
+  };
 
   useEffect(() => {
     if (sessionId) {
@@ -150,6 +188,25 @@ const InterviewPrep = () => {
                       isPinned = {data?.isPinned}
                       onTooglePin = {() => toggleQuestionPinStatus(data._id)}
                     />
+                  
+
+                    {!isLoading && 
+                      sessionData?.questions?.length == index + 1 && (
+                        <div className="flex items-center justify-center mt-5">
+                          <button 
+                            className="flex items-center gap-3 text-sm text-white font-medium bg-black px-5 py-2 mr-2 rounded text-nowrap cursor-pointer"
+                            disabled={isLoading || isUpdateLoader}
+                            onClick={uploadMoreQuestions}
+                          >
+                            {isUpdateLoader ? (
+                              <SpinnerLoader />
+                            ) : (
+                              <LuListCollapse className="text-lg" />
+                            )} { " " }
+                            Load More
+                          </button>
+                        </div>
+                      )}
                   </>
                 </motion.div>
               );
